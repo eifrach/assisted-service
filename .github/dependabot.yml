@@ -17,8 +17,8 @@ updates:
     commit-message:
       prefix: "NO-ISSUE"
     groups:
-      dependency-type: "production"
       go-api-dependencies:
+        dependency-type: "production"
         patterns: 
           - "*"
   - package-ecosystem: "gomod"
@@ -65,7 +65,7 @@ updates:
     commit-message:
       prefix: "NO-ISSUE"
     groups:
-      dependency-type: "production"
       go-dependencies:
+        dependency-type: "production"
         patterns: 
           - "*"
