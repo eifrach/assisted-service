@@ -16,10 +16,8 @@ updates:
       - "go"
     commit-message:
       prefix: "NO-ISSUE"
-    allow:
-      - dependency-name: "*"
-        dependency-type: all
     groups:
+      dependency-type: "production"
       go-api-dependencies:
         patterns: 
           - "*"
@@ -34,11 +32,9 @@ updates:
       - "go"
     commit-message:
       prefix: "NO-ISSUE"
-    allow:
-      - dependency-name: "*"
-        dependency-type: all
     groups:
       go-client-dependencies:
+        dependency-type: "production"
         patterns: 
           - "*"
   - package-ecosystem: "gomod"
@@ -52,11 +48,9 @@ updates:
       - "go"
     commit-message:
       prefix: "NO-ISSUE"
-    allow:
-      - dependency-name: "*"
-        dependency-type: all
     groups:
       go-models-dependencies:
+        dependency-type: "production"
         patterns: 
           - "*"
   - package-ecosystem: "gomod"
@@ -70,10 +64,8 @@ updates:
       - "go"
     commit-message:
       prefix: "NO-ISSUE"
-    allow:
-      - dependency-name: "*"
-        dependency-type: all
     groups:
+      dependency-type: "production"
       go-dependencies:
         patterns: 
           - "*"
