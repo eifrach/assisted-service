@@ -60,7 +60,6 @@ updates:
         patterns: 
           - "*"
   - package-ecosystem: "gomod"
-    directory: "/"
     schedule:
       interval: "daily"
     labels:
