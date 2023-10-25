@@ -21,7 +21,6 @@ updates:
         dependency-type: all
     groups:
       go-api-dependencies:
-        dependency-type: "production"
         update-types:
           - "minor"
           - "patch"
@@ -44,7 +43,6 @@ updates:
         dependency-type: all
     groups:
       go-client-dependencies:
-        dependency-type: "production"
         update-types:
           - "minor"
           - "patch"
@@ -67,7 +65,6 @@ updates:
         dependency-type: all
     groups:
       go-models-dependencies:
-        dependency-type: "production"
         update-types:
           - "minor"
           - "patch"
