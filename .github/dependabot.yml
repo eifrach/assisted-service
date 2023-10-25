@@ -90,7 +90,6 @@ updates:
         dependency-type: all
     groups:
       go-dependencies:
-        dependency-type: "production"
         update-types:
           - "minor"
           - "patch"
