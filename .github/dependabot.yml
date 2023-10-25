@@ -16,9 +16,6 @@ updates:
       - "go"
     commit-message:
       prefix: "NO-ISSUE"
-    allow:
-      - dependency-name: "*"
-        dependency-type: all
     groups:
       go-api-dependencies:
         update-types:
@@ -40,9 +37,6 @@ updates:
       prefix: "NO-ISSUE"
     groups:
       go-client-dependencies:
-        allow:
-          - dependency-name: "*"
-            dependency-type: all
         update-types:
           - "minor"
           - "patch"
@@ -60,9 +54,6 @@ updates:
       - "go"
     commit-message:
       prefix: "NO-ISSUE"
-    allow:
-      - dependency-name: "*"
-        dependency-type: all
     groups:
       go-models-dependencies:
         update-types:
@@ -82,9 +73,6 @@ updates:
       - "go"
     commit-message:
       prefix: "NO-ISSUE"
-    allow:
-      - dependency-name: "*"
-        dependency-type: all
     groups:
       go-dependencies:
         update-types:
