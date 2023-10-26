@@ -84,8 +84,7 @@ updates:
         patterns: 
           - "*"          
   - package-ecosystem: "gomod"
-    directory: "/"
-    vendor: true
+    directory: "/vendor"
     schedule:
       interval: "daily"
     labels:
