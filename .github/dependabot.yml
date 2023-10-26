@@ -6,7 +6,7 @@
 version: 2
 updates:
   - package-ecosystem: "gomod"
-    directory: "/*"
+    directory: "/"
     schedule:
       interval: "daily"
     labels:
@@ -31,4 +31,81 @@ updates:
           - "major"
         patterns: 
           - "*"
-          
+  - package-ecosystem: "gomod"
+    directory: "/api"
+    schedule:
+      interval: "daily"
+    labels:
+      - "approved"
+      - "lgtm"
+      - "dependabot"
+      - "go"
+    commit-message:
+      prefix: "NO-ISSUE"
+    allow:
+      - dependency-name: "*"
+        dependency-type: all
+    groups:
+      go-minor-dependencies:
+        update-types:
+          - "minor"
+          - "patch"
+        patterns: 
+          - "*"
+      go-major-dependencies:
+        update-types:
+          - "major"
+        patterns: 
+          - "*"
+  - package-ecosystem: "gomod"
+    directory: "/client"
+    schedule:
+      interval: "daily"
+    labels:
+      - "approved"
+      - "lgtm"
+      - "dependabot"
+      - "go"
+    commit-message:
+      prefix: "NO-ISSUE"
+    allow:
+      - dependency-name: "*"
+        dependency-type: all
+    groups:
+      go-minor-dependencies:
+        update-types:
+          - "minor"
+          - "patch"
+        patterns: 
+          - "*"
+      go-major-dependencies:
+        update-types:
+          - "major"
+        patterns: 
+          - "*"          
+  - package-ecosystem: "gomod"
+    directory: "/models"
+    schedule:
+      interval: "daily"
+    labels:
+      - "approved"
+      - "lgtm"
+      - "dependabot"
+      - "go"
+    commit-message:
+      prefix: "NO-ISSUE"
+    allow:
+      - dependency-name: "*"
+        dependency-type: all
+    groups:
+      go-minor-dependencies:
+        update-types:
+          - "minor"
+          - "patch"
+        patterns: 
+          - "*"
+      go-major-dependencies:
+        update-types:
+          - "major"
+        patterns: 
+          - "*"          
