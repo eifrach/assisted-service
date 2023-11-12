@@ -171,12 +171,23 @@ func (r *InfraEnvReconciler) updateInfraEnv(ctx context.Context, log logrus.Fiel
 		updateParams.InfraEnvUpdateParams.AdditionalTrustBundle = &infraEnv.Spec.AdditionalTrustBundle
 	}
 
-	pullSecret, err := r.PullSecretHandler.GetValidPullSecret(ctx, getPullSecretKey(infraEnv.Namespace, infraEnv.Spec.PullSecretRef))
+	pullSecretKey := getPullSecretKey(infraEnv.Namespace, infraEnv.Spec.PullSecretRef)
+	pullSecret, err := r.PullSecretHandler.GetValidPullSecret(ctx, pullSecretKey)
 	if err != nil {
 		log.WithError(err).Error("failed to get pull secret")
 		return nil, err
 	}
 	updateParams.InfraEnvUpdateParams.PullSecret = pullSecret
+
+	secret, err := getSecret(ctx, r.Client, r.APIReader, pullSecretKey)
+	if err != nil {
+		log.WithError(err).Errorf("failed to get kubeconfig secret %s", pullSecretKey)
+		return nil, err
+	}
+	if err = ensureSecretIsLabelled(ctx, r.Client, secret, pullSecretKey); err != nil {
+		r.Log.WithError(err).Errorf("failed to label kubeconfig secret %s", pullSecretKey)
+		return nil, err
+	}
 
 	staticNetworkConfig, err := r.processNMStateConfig(ctx, log, infraEnv)
 	if err != nil {
@@ -636,6 +647,29 @@ func (r *InfraEnvReconciler) initrdSchemeChanged(initrdURL string) (bool, error)
 	return u.Scheme != desiredScheme, nil
 }
 
+func generateStaticNetworkConfigDownloadURL(baseURL string, infraEnvId string, authType auth.AuthType) (string, error) {
+	builder := &installer.V2DownloadInfraEnvFilesURL{
+		InfraEnvID: strfmt.UUID(infraEnvId),
+		FileName:   "static-network-config",
+	}
+	u, err := builder.Build()
+	if err != nil {
+		return "", err
+	}
+
+	downloadURL := fmt.Sprintf("%s%s", baseURL, u.RequestURI())
+	if authType != auth.TypeLocal {
+		return downloadURL, nil
+	}
+
+	downloadURL, err = gencrypto.SignURL(downloadURL, infraEnvId, gencrypto.ClusterKey)
+	if err != nil {
+		return "", errors.Wrapf(err, "failed to sign static network config download URL for infraenv %s", infraEnvId)
+	}
+
+	return downloadURL, nil
+}
+
 func (r *InfraEnvReconciler) updateInfraEnvStatus(
 	ctx context.Context, log logrus.FieldLogger, infraEnv *aiv1beta1.InfraEnv, internalInfraEnv *common.InfraEnv) (ctrl.Result, error) {
 
@@ -658,6 +692,13 @@ func (r *InfraEnvReconciler) updateInfraEnvStatus(
 		imageCreatedAt := metav1.NewTime(time.Time(internalInfraEnv.GeneratedAt))
 		infraEnv.Status.CreatedTime = &imageCreatedAt
 		isoUpdated = true
+	}
+
+	if infraEnv.Status.InfraEnvDebugInfo.StaticNetworkDownloadURL == "" && internalInfraEnv.StaticNetworkConfig != "" {
+		infraEnv.Status.InfraEnvDebugInfo.StaticNetworkDownloadURL, err = generateStaticNetworkConfigDownloadURL(r.ServiceBaseURL, internalInfraEnv.ID.String(), r.AuthType)
+		if err != nil {
+			r.Log.Errorf("Unable to generate static network config download URL for infraenv with ID %s", internalInfraEnv.ID.String())
+		}
 	}
 
 	// update boot artifacts URL if IPXE insecure setting was changed or if the ISO was updated
@@ -818,11 +859,37 @@ func (r *InfraEnvReconciler) SetupWithManager(mgr ctrl.Manager) error {
 		return reply
 	}
 
+	mapPullSecretToInfraEnv := func(ps client.Object) []reconcile.Request {
+		log := logutil.FromContext(context.Background(), r.Log).WithFields(
+			logrus.Fields{
+				"pull_secret":           ps.GetName(),
+				"pull_secret_namespace": ps.GetNamespace(),
+			})
+		// PullSecretRef is a LocalObjectReference, which means it must exist in the
+		// same namespace. Let's get only the ClusterDeployments from the Secret's namespace.
+		infraEnvs := &aiv1beta1.InfraEnvList{}
+		if err := r.List(context.Background(), infraEnvs, &client.ListOptions{Namespace: ps.GetNamespace()}); err != nil {
+			log.Debugf("failed to list InfraEnvs")
+			return []reconcile.Request{}
+		}
+		reply := make([]reconcile.Request, 0, len(infraEnvs.Items))
+		for _, infraEnv := range infraEnvs.Items {
+			if infraEnv.Spec.PullSecretRef != nil && infraEnv.Spec.PullSecretRef.Name == ps.GetName() {
+				reply = append(reply, reconcile.Request{NamespacedName: types.NamespacedName{
+					Namespace: infraEnv.Namespace,
+					Name:      infraEnv.Name,
+				}})
+			}
+		}
+		return reply
+	}
+
 	infraEnvUpdates := r.CRDEventsHandler.GetInfraEnvUpdates()
 	return ctrl.NewControllerManagedBy(mgr).
 		For(&aiv1beta1.InfraEnv{}).
 		Watches(&source.Kind{Type: &aiv1beta1.NMStateConfig{}}, handler.EnqueueRequestsFromMapFunc(mapNMStateConfigToInfraEnv)).
 		Watches(&source.Kind{Type: &hivev1.ClusterDeployment{}}, handler.EnqueueRequestsFromMapFunc(mapClusterDeploymentToInfraEnv)).
+		Watches(&source.Kind{Type: &corev1.Secret{}}, handler.EnqueueRequestsFromMapFunc(mapPullSecretToInfraEnv)).
 		Watches(&source.Channel{Source: infraEnvUpdates}, &handler.EnqueueRequestForObject{}).
 		Complete(r)
 }

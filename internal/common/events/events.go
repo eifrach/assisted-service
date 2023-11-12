@@ -1554,25 +1554,30 @@ func (e *ClusterPrepareInstallationStartedEvent) FormatMessage() string {
 type InstallationPreparingTimedOutEvent struct {
     eventName string
     ClusterId strfmt.UUID
+    Reason string
 }
 
 var InstallationPreparingTimedOutEventName string = "installation_preparing_timed_out"
 
 func NewInstallationPreparingTimedOutEvent(
     clusterId strfmt.UUID,
+    reason string,
 ) *InstallationPreparingTimedOutEvent {
     return &InstallationPreparingTimedOutEvent{
         eventName: InstallationPreparingTimedOutEventName,
         ClusterId: clusterId,
+        Reason: reason,
     }
 }
 
 func SendInstallationPreparingTimedOutEvent(
     ctx context.Context,
     eventsHandler eventsapi.Sender,
-    clusterId strfmt.UUID,) {
+    clusterId strfmt.UUID,
+    reason string,) {
     ev := NewInstallationPreparingTimedOutEvent(
         clusterId,
+        reason,
     )
     eventsHandler.SendClusterEvent(ctx, ev)
 }
@@ -1581,9 +1586,11 @@ func SendInstallationPreparingTimedOutEventAtTime(
     ctx context.Context,
     eventsHandler eventsapi.Sender,
     clusterId strfmt.UUID,
+    reason string,
     eventTime time.Time) {
     ev := NewInstallationPreparingTimedOutEvent(
         clusterId,
+        reason,
     )
     eventsHandler.SendClusterEventAtTime(ctx, ev, eventTime)
 }
@@ -1604,12 +1611,13 @@ func (e *InstallationPreparingTimedOutEvent) GetClusterId() strfmt.UUID {
 func (e *InstallationPreparingTimedOutEvent) format(message *string) string {
     r := strings.NewReplacer(
         "{cluster_id}", fmt.Sprint(e.ClusterId),
+        "{reason}", fmt.Sprint(e.Reason),
     )
     return r.Replace(*message)
 }
 
 func (e *InstallationPreparingTimedOutEvent) FormatMessage() string {
-    s := "Preparing for installation was timed out for the cluster"
+    s := "Preparing for installation was timed out for the cluster, reason {reason}"
     return e.format(&s)
 }
 
@@ -6395,6 +6403,109 @@ func (e *ValidationsIgnoredEvent) format(message *string) string {
 
 func (e *ValidationsIgnoredEvent) FormatMessage() string {
     s := "Cluster {cluster_id}: ignored some or all validations at the discretion of the user"
+    return e.format(&s)
+}
+
+//
+// Event reboots_for_node
+//
+type RebootsForNodeEvent struct {
+    eventName string
+    HostId strfmt.UUID
+    NodeName string
+    InfraEnvId strfmt.UUID
+    ClusterId *strfmt.UUID
+    Reboots int64
+}
+
+var RebootsForNodeEventName string = "reboots_for_node"
+
+func NewRebootsForNodeEvent(
+    hostId strfmt.UUID,
+    nodeName string,
+    infraEnvId strfmt.UUID,
+    clusterId *strfmt.UUID,
+    reboots int64,
+) *RebootsForNodeEvent {
+    return &RebootsForNodeEvent{
+        eventName: RebootsForNodeEventName,
+        HostId: hostId,
+        NodeName: nodeName,
+        InfraEnvId: infraEnvId,
+        ClusterId: clusterId,
+        Reboots: reboots,
+    }
+}
+
+func SendRebootsForNodeEvent(
+    ctx context.Context,
+    eventsHandler eventsapi.Sender,
+    hostId strfmt.UUID,
+    nodeName string,
+    infraEnvId strfmt.UUID,
+    clusterId *strfmt.UUID,
+    reboots int64,) {
+    ev := NewRebootsForNodeEvent(
+        hostId,
+        nodeName,
+        infraEnvId,
+        clusterId,
+        reboots,
+    )
+    eventsHandler.SendHostEvent(ctx, ev)
+}
+
+func SendRebootsForNodeEventAtTime(
+    ctx context.Context,
+    eventsHandler eventsapi.Sender,
+    hostId strfmt.UUID,
+    nodeName string,
+    infraEnvId strfmt.UUID,
+    clusterId *strfmt.UUID,
+    reboots int64,
+    eventTime time.Time) {
+    ev := NewRebootsForNodeEvent(
+        hostId,
+        nodeName,
+        infraEnvId,
+        clusterId,
+        reboots,
+    )
+    eventsHandler.SendHostEventAtTime(ctx, ev, eventTime)
+}
+
+func (e *RebootsForNodeEvent) GetName() string {
+    return e.eventName
+}
+
+func (e *RebootsForNodeEvent) GetSeverity() string {
+    return "info"
+}
+func (e *RebootsForNodeEvent) GetClusterId() *strfmt.UUID {
+    return e.ClusterId
+}
+func (e *RebootsForNodeEvent) GetHostId() strfmt.UUID {
+    return e.HostId
+}
+func (e *RebootsForNodeEvent) GetInfraEnvId() strfmt.UUID {
+    return e.InfraEnvId
+}
+
+
+
+func (e *RebootsForNodeEvent) format(message *string) string {
+    r := strings.NewReplacer(
+        "{host_id}", fmt.Sprint(e.HostId),
+        "{node_name}", fmt.Sprint(e.NodeName),
+        "{infra_env_id}", fmt.Sprint(e.InfraEnvId),
+        "{cluster_id}", fmt.Sprint(e.ClusterId),
+        "{reboots}", fmt.Sprint(e.Reboots),
+    )
+    return r.Replace(*message)
+}
+
+func (e *RebootsForNodeEvent) FormatMessage() string {
+    s := "Node {node_name} has been rebooted {reboots} times before completing installation"
     return e.format(&s)
 }
 

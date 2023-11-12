@@ -7,7 +7,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"net"
 	"os"
 	"os/exec"
@@ -5178,7 +5177,7 @@ var _ = Describe("disk encryption", func() {
 			c = reply.GetPayload()
 
 			generateEssentialPrepareForInstallationSteps(ctx, c.Hosts...)
-			waitForInstallationPreparationCompletionStatus(*c.ID, common.InstallationPreparationSucceeded)
+			waitForLastInstallationCompletionStatus(*c.ID, models.LastInstallationPreparationStatusSuccess)
 		})
 
 		It("host doesn't have minimal requirements for disk-encryption, TPM mode", func() {
@@ -5329,7 +5328,7 @@ var _ = Describe("Verify install-config manifest", func() {
 		Expect(err).NotTo(HaveOccurred())
 
 		// Read install-config.yaml
-		content, err := ioutil.ReadFile(file.Name())
+		content, err := os.ReadFile(file.Name())
 		Expect(err).NotTo(HaveOccurred())
 
 		installConfig := make(map[string]interface{})

@@ -193,7 +193,7 @@ spec:
       runAfter:
       - prefetch-dependencies
       taskRef:
-        bundle: quay.io/redhat-appstudio-tekton-catalog/task-buildah:0.1@sha256:93c318074716173ac4f77ec873fc2ab58fc102c8c49d525e7f7d6a12c13338c1
+        bundle: quay.io/redhat-appstudio-tekton-catalog/task-buildah:0.1@sha256:6e20ce8b188b5a017892fc657364b93abda3fa2c54effe2074168906fba07745
         name: buildah
       when:
       - input: $(tasks.init.results.build)
@@ -260,7 +260,7 @@ spec:
       - name: BASE_IMAGES_DIGESTS
         value: $(tasks.build-container.results.BASE_IMAGES_DIGESTS)
       taskRef:
-        bundle: quay.io/redhat-appstudio-tekton-catalog/task-deprecated-image-check:0.3@sha256:d507b3441d6c039691aa75c18d30f5191febcdca8f7f57f6122d75bb2f6f585d
+        bundle: quay.io/redhat-appstudio-tekton-catalog/task-deprecated-image-check:0.3@sha256:f23d0cca3c02a78fb2b2760d0fba28a3196fa7bcc106da35f45ef95d1f8e7065
         name: deprecated-image-check
       when:
       - input: $(params.skip-checks)
@@ -292,7 +292,7 @@ spec:
       runAfter:
       - clone-repository
       taskRef:
-        bundle: quay.io/redhat-appstudio-tekton-catalog/task-sast-snyk-check:0.1@sha256:edd4ba638b71de52c2662abd3e93fd876e6e75cd07b162d13fae014d3a1a1fac
+        bundle: quay.io/redhat-appstudio-tekton-catalog/task-sast-snyk-check:0.1@sha256:f57c69cfedf37a46dd61285b5b9b4805ff196facaad2d7cdeded496c77d31bec
         name: sast-snyk-check
       when:
       - input: $(params.skip-checks)

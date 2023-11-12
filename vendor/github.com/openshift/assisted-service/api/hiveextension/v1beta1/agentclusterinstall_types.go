@@ -59,7 +59,7 @@ const (
 	ClusterInstallationNotStartedReason string = "InstallationNotStarted"
 	ClusterInstallationNotStartedMsg    string = "The installation has not yet started"
 	ClusterInstallationOnHoldReason     string = "InstallationOnHold"
-	ClusterInstallationOnHoldMsg        string = "The installation is on hold. To unhold set holdInstallation and hive.openshift.io/reconcile-pause annotaiton in cluster deployment to false"
+	ClusterInstallationOnHoldMsg        string = "The installation is on hold. To unhold set holdInstallation to false"
 	ClusterInstallationInProgressReason string = "InstallationInProgress"
 	ClusterInstallationInProgressMsg    string = "The installation is in progress:"
 	ClusterUnknownStatusReason          string = "UnknownStatus"
@@ -79,6 +79,11 @@ const (
 	ClusterBackendErrorMsg    string = "The Spec could not be synced due to backend error:"
 	ClusterInputErrorReason   string = "InputError"
 	ClusterInputErrorMsg      string = "The Spec could not be synced due to an input error:"
+
+	ClusterLastInstallationPreparationFailedOKReason    string = "There is no failing prior preparation attempt"
+	ClusterLastInstallationPreparationFailedErrorReason string = "The last installation preparation failed"
+	ClusterLastInstallationPreparationPending           string = "Cluster preparation has never been performed for this cluster"
+	ClusterLastInstallationPreparationFailedCondition   string = "LastInstallationPreparationFailed"
 )
 
 // +genclient

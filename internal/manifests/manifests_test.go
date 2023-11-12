@@ -258,6 +258,23 @@ var _ = Describe("ClusterManifestTests", func() {
 				return fmt.Sprintf("{\"data\":\"%s\"}", largeElementBuilder.String())
 			}
 
+			It("Does not accept a filename that does not contain a name before the extension", func() {
+				clusterID := registerCluster().ID
+				content := "{}"
+				fileName := ".yaml"
+				response := manifestsAPI.V2CreateClusterManifest(ctx, operations.V2CreateClusterManifestParams{
+					ClusterID: *clusterID,
+					CreateManifestParams: &models.CreateManifestParams{
+						Content:  &content,
+						FileName: &fileName,
+					},
+				})
+				err := response.(*common.ApiErrorResponse)
+				expectedErrorMessage := fmt.Sprintf("Cluster manifest %s for cluster %s has an invalid filename.", fileName, clusterID)
+				Expect(err.StatusCode()).To(Equal(int32(http.StatusUnprocessableEntity)))
+				Expect(err.Error()).To(Equal(expectedErrorMessage))
+			})
+
 			It("Does not accept a filename that contains spaces", func() {
 				clusterID := registerCluster().ID
 				content := "{}"
@@ -271,7 +288,7 @@ var _ = Describe("ClusterManifestTests", func() {
 				})
 				err := response.(*common.ApiErrorResponse)
 				expectedErrorMessage := fmt.Sprintf("Cluster manifest %s for cluster %s should not include a space in its name.", fileName, clusterID)
-				Expect(err.StatusCode()).To(Equal(int32(http.StatusBadRequest)))
+				Expect(err.StatusCode()).To(Equal(int32(http.StatusUnprocessableEntity)))
 				Expect(err.Error()).To(Equal(expectedErrorMessage))
 			})
 
@@ -443,8 +460,8 @@ spec:
 				})
 				Expect(response).Should(BeAssignableToTypeOf(common.NewApiError(http.StatusBadRequest, errors.New(""))))
 				err := response.(*common.ApiErrorResponse)
-				Expect(err.StatusCode()).To(Equal(int32(http.StatusBadRequest)))
-				Expect(err.Error()).To(ContainSubstring("Cluster manifest openshift/99-test.yaml for cluster " + clusterID.String() + " should not include a directory in its name."))
+				Expect(err.StatusCode()).To(Equal(int32(http.StatusUnprocessableEntity)))
+				Expect(err.Error()).To(ContainSubstring("Cluster manifest openshift/99-test.yaml for cluster " + clusterID.String() + " should not include a directory in it's name."))
 			})
 
 			It("Creation fails for a manifest file that exceeds the maximum upload size", func() {
@@ -864,7 +881,7 @@ invalid YAML content: {
 			})
 			err := response.(*common.ApiErrorResponse)
 			expectedErrorMessage := fmt.Sprintf("Cluster manifest %s for cluster %s should not include a space in its name.", destFileName, clusterID)
-			Expect(err.StatusCode()).To(Equal(int32(http.StatusBadRequest)))
+			Expect(err.StatusCode()).To(Equal(int32(http.StatusUnprocessableEntity)))
 			Expect(err.Error()).To(Equal(expectedErrorMessage))
 		})
 
