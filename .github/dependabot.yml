@@ -2,7 +2,6 @@
 version: 2
 updates:
   - package-ecosystem: gomod
-    versioning-strategy: increase
     directory: /api
     schedule:
       interval: daily
@@ -20,7 +19,6 @@ updates:
         update-types:
           - minor
           - patch
-
       go-major-api-dependencies:
         patterns:
           - "*"
@@ -28,7 +26,6 @@ updates:
           - major
 
   - package-ecosystem: gomod
-    versioning-strategy: increase
     directory: /client
     schedule:
       interval: daily
@@ -46,7 +43,6 @@ updates:
         update-types:
           - minor
           - patch
-          
       go-major-client-dependencies:
         patterns:
           - "*"
@@ -54,7 +50,6 @@ updates:
           - major
           
   - package-ecosystem: gomod
-    versioning-strategy: increase
     directory: /models
     schedule:
       interval: daily
@@ -72,13 +67,11 @@ updates:
         update-types:
           - minor
           - patch
-          
       go-major-models-dependencies:
         patterns:
           - "*"
 
   - package-ecosystem: gomod
-    versioning-strategy: increase
     directory: /
     schedule:
       interval: daily
@@ -96,7 +89,6 @@ updates:
         update-types:
           - minor
           - patch
-          
       go-major-dependencies:
         patterns:
           - "*"
