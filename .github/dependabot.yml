@@ -18,7 +18,7 @@ updates:
         update-types:
           - major
       go-minor-api-dependencies:
-        patterns:
+        pattern:
           - "*"
 
   - package-ecosystem: gomod
@@ -38,7 +38,7 @@ updates:
         update-types:
           - major
       go-minor-client-dependencies:
-        patterns:
+        pattern:
           - "*"
 
   - package-ecosystem: gomod
@@ -58,7 +58,7 @@ updates:
         update-types:
           - major
       go-minor-models-dependencies:
-        patterns:
+        pattern:
           - "*"
 
   - package-ecosystem: gomod
@@ -78,5 +78,5 @@ updates:
         update-types:
           - major
       go-minor-dependencies:
-        patterns:
+        pattern:
           - "*"
