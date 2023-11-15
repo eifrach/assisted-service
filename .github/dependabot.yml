@@ -18,9 +18,9 @@ updates:
         update-types:
           - major
       go-minor-api-dependencies:
-        update-types:
-          - minor
-          - patch
+        patterns:
+          - "*"
+
   - package-ecosystem: gomod
     open-pull-requests-limit: 10
     directory: /client
@@ -38,9 +38,9 @@ updates:
         update-types:
           - major
       go-minor-client-dependencies:
-        update-types:
-          - minor
-          - patch
+        patterns:
+          - "*"
+
   - package-ecosystem: gomod
     open-pull-requests-limit: 10
     directory: /models
@@ -58,9 +58,9 @@ updates:
         update-types:
           - major
       go-minor-models-dependencies:
-        update-types:
-          - minor
-          - patch
+        patterns:
+          - "*"
+
   - package-ecosystem: gomod
     open-pull-requests-limit: 10
     directory: /
