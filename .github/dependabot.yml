@@ -14,11 +14,13 @@ updates:
     commit-message:
       prefix: NO-ISSUE
     groups:
-      go-major-api-dependencies:
-        update-types:
-          - major
       go-minor-api-dependencies:
-        pattern:
+        update-types:
+          - minor
+          - patch
+
+      go-major-api-dependencies:
+        patterns:
           - "*"
 
   - package-ecosystem: gomod
@@ -34,11 +36,13 @@ updates:
     commit-message:
       prefix: NO-ISSUE
     groups:
-      go-major-client-dependencies:
-        update-types:
-          - major
       go-minor-client-dependencies:
-        pattern:
+        update-types:
+          - minor
+          - patch
+          
+      go-major-client-dependencies:
+        patterns:
           - "*"
 
   - package-ecosystem: gomod
@@ -54,11 +58,13 @@ updates:
     commit-message:
       prefix: NO-ISSUE
     groups:
-      go-major-models-dependencies:
-        update-types:
-          - major
       go-minor-models-dependencies:
-        pattern:
+        update-types:
+          - minor
+          - patch
+          
+      go-major-models-dependencies:
+        patterns:
           - "*"
 
   - package-ecosystem: gomod
@@ -74,9 +80,11 @@ updates:
     commit-message:
       prefix: NO-ISSUE
     groups:
-      go-major-dependencies:
-        update-types:
-          - major
       go-minor-dependencies:
-        pattern:
+        update-types:
+          - minor
+          - patch
+          
+      go-major-dependencies:
+        patterns:
           - "*"
