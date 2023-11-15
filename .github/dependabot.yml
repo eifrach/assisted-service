@@ -2,6 +2,7 @@
 version: 2
 updates:
   - package-ecosystem: gomod
+    open-pull-requests-limit: 10
     directory: /api
     schedule:
       interval: daily
@@ -21,6 +22,7 @@ updates:
           - minor
           - patch
   - package-ecosystem: gomod
+    open-pull-requests-limit: 10
     directory: /client
     schedule:
       interval: daily
@@ -40,6 +42,7 @@ updates:
           - minor
           - patch
   - package-ecosystem: gomod
+    open-pull-requests-limit: 10
     directory: /models
     schedule:
       interval: daily
@@ -59,6 +62,7 @@ updates:
           - minor
           - patch
   - package-ecosystem: gomod
+    open-pull-requests-limit: 10
     directory: /
     schedule:
       interval: daily
