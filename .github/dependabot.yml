@@ -15,6 +15,8 @@ updates:
       prefix: NO-ISSUE
     groups:
       go-minor-api-dependencies:
+        patterns:
+          - "*"
         update-types:
           - minor
           - patch
@@ -22,6 +24,8 @@ updates:
       go-major-api-dependencies:
         patterns:
           - "*"
+        update-types:
+          - major
 
   - package-ecosystem: gomod
     open-pull-requests-limit: 10
@@ -37,6 +41,8 @@ updates:
       prefix: NO-ISSUE
     groups:
       go-minor-client-dependencies:
+        patterns:
+          - "*"
         update-types:
           - minor
           - patch
@@ -44,7 +50,9 @@ updates:
       go-major-client-dependencies:
         patterns:
           - "*"
-
+        update-types:
+          - major
+          
   - package-ecosystem: gomod
     open-pull-requests-limit: 10
     directory: /models
@@ -59,6 +67,8 @@ updates:
       prefix: NO-ISSUE
     groups:
       go-minor-models-dependencies:
+        patterns:
+          - "*"
         update-types:
           - minor
           - patch
@@ -81,6 +91,8 @@ updates:
       prefix: NO-ISSUE
     groups:
       go-minor-dependencies:
+        patterns:
+          - "*"
         update-types:
           - minor
           - patch
@@ -88,3 +100,5 @@ updates:
       go-major-dependencies:
         patterns:
           - "*"
+        update-types:
+          - major
