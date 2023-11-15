@@ -74,23 +74,9 @@ updates:
     commit-message:
       prefix: NO-ISSUE
     groups:
-      go-minor-dependencies:
-        update-types:
-          - minor
-          - patch
-  - package-ecosystem: gomod
-    open-pull-requests-limit: 10
-    directory: /
-    schedule:
-      interval: daily
-    labels:
-      - approved
-      - lgtm
-      - dependabot
-      - go
-    commit-message:
-      prefix: NO-ISSUE
-    groups:
       go-major-dependencies:
         update-types:
           - major
+      go-minor-dependencies:
+        patterns:
+          - "*"
