@@ -14,10 +14,10 @@ updates:
     commit-message:
       prefix: NO-ISSUE
     groups:
-      go-major-dependencies:
+      go-major-api-dependencies:
         update-types:
           - major
-      go-minor-dependencies:
+      go-minor-api-dependencies:
         update-types:
           - minor
           - patch
@@ -34,10 +34,10 @@ updates:
     commit-message:
       prefix: NO-ISSUE
     groups:
-      go-major-dependencies:
+      go-major-client-dependencies:
         update-types:
           - major
-      go-minor-dependencies:
+      go-minor-client-dependencies:
         update-types:
           - minor
           - patch
@@ -54,10 +54,10 @@ updates:
     commit-message:
       prefix: NO-ISSUE
     groups:
-      go-major-dependencies:
+      go-major-models-dependencies:
         update-types:
           - major
-      go-minor-dependencies:
+      go-minor-models-dependencies:
         update-types:
           - minor
           - patch
