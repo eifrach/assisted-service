@@ -21,7 +21,6 @@ package v1 // github.com/openshift-online/ocm-sdk-go/clustersmgmt/v1
 
 import (
 	"io"
-	"net/http"
 
 	jsoniter "github.com/json-iterator/go"
 	"github.com/openshift-online/ocm-sdk-go/helpers"
@@ -31,7 +30,10 @@ import (
 func MarshalAWSMachinePool(object *AWSMachinePool, writer io.Writer) error {
 	stream := helpers.NewStream(writer)
 	writeAWSMachinePool(object, stream)
-	stream.Flush()
+	err := stream.Flush()
+	if err != nil {
+		return err
+	}
 	return stream.Error
 }
 
@@ -63,14 +65,22 @@ func writeAWSMachinePool(object *AWSMachinePool, stream *jsoniter.Stream) {
 		count++
 	}
 	var present_ bool
-	present_ = object.bitmap_&8 != 0 && object.spotMarketOptions != nil
+	present_ = object.bitmap_&8 != 0 && object.additionalSecurityGroupIds != nil
+	if present_ {
+		if count > 0 {
+			stream.WriteMore()
+		}
+		stream.WriteObjectField("additional_security_group_ids")
+		writeStringList(object.additionalSecurityGroupIds, stream)
+		count++
+	}
+	present_ = object.bitmap_&16 != 0 && object.spotMarketOptions != nil
 	if present_ {
 		if count > 0 {
 			stream.WriteMore()
 		}
 		stream.WriteObjectField("spot_market_options")
 		writeAWSSpotMarketOptions(object.spotMarketOptions, stream)
-		count++
 	}
 	stream.WriteObjectEnd()
 }
@@ -78,9 +88,6 @@ func writeAWSMachinePool(object *AWSMachinePool, stream *jsoniter.Stream) {
 // UnmarshalAWSMachinePool reads a value of the 'AWS_machine_pool' type from the given
 // source, which can be an slice of bytes, a string or a reader.
 func UnmarshalAWSMachinePool(source interface{}) (object *AWSMachinePool, err error) {
-	if source == http.NoBody {
-		return
-	}
 	iterator, err := helpers.NewIterator(source)
 	if err != nil {
 		return
@@ -110,10 +117,14 @@ func readAWSMachinePool(iterator *jsoniter.Iterator) *AWSMachinePool {
 		case "href":
 			object.href = iterator.ReadString()
 			object.bitmap_ |= 4
+		case "additional_security_group_ids":
+			value := readStringList(iterator)
+			object.additionalSecurityGroupIds = value
+			object.bitmap_ |= 8
 		case "spot_market_options":
 			value := readAWSSpotMarketOptions(iterator)
 			object.spotMarketOptions = value
-			object.bitmap_ |= 8
+			object.bitmap_ |= 16
 		default:
 			iterator.ReadAny()
 		}
