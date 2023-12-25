@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/hashicorp/go-version"
 	"github.com/kelseyhightower/envconfig"
 	"github.com/openshift/assisted-service/internal/common"
 	"github.com/openshift/assisted-service/internal/operators/api"
@@ -73,23 +72,14 @@ func (o *operator) GetHostValidationID() string {
 
 // ValidateCluster checks if the cluster satisfies the requirements to install the operator.
 func (o *operator) ValidateCluster(_ context.Context, cluster *common.Cluster) (api.ValidationResult, error) {
-	var ocpVersion, minOpenshiftVersionForMce *version.Version
-	var err error
-
-	ocpVersion, err = version.NewVersion(cluster.OpenshiftVersion)
+	ok, err := common.BaseVersionLessThan(o.config.MceMinOpenshiftVersion, cluster.OpenshiftVersion)
 	if err != nil {
-		return api.ValidationResult{Status: api.Failure, ValidationId: o.GetHostValidationID(), Reasons: []string{err.Error()}}, nil
+		errorMsg := fmt.Sprintf("Failed to validated MCE version, got %s", cluster.OpenshiftVersion)
+		return api.ValidationResult{Status: api.Failure, ValidationId: o.GetClusterValidationID(), Reasons: []string{errorMsg}}, nil
 	}
-
-	minOpenshiftVersionForMce, err = version.NewVersion(o.config.MceMinOpenshiftVersion)
-
-	if err != nil {
-		return api.ValidationResult{Status: api.Failure, ValidationId: o.GetHostValidationID(), Reasons: []string{err.Error()}}, nil
-	}
-
-	if ocpVersion.LessThan(minOpenshiftVersionForMce) {
-		message := fmt.Sprintf("multicluster engine is only supported for openshift versions %s and above", o.config.MceMinOpenshiftVersion)
-		return api.ValidationResult{Status: api.Failure, ValidationId: o.GetClusterValidationID(), Reasons: []string{message}}, nil
+	if ok {
+		errorMsg := fmt.Sprintf("multicluster engine is only supported for openshift versions %s and above, got %s", o.config.MceMinOpenshiftVersion, cluster.OpenshiftVersion)
+		return api.ValidationResult{Status: api.Failure, ValidationId: o.GetClusterValidationID(), Reasons: []string{errorMsg}}, nil
 	}
 
 	return api.ValidationResult{Status: api.Success, ValidationId: o.GetClusterValidationID()}, nil
