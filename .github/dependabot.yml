@@ -32,13 +32,15 @@ updates:
       - go
     commit-message:
       prefix: NO-ISSUE
+    # ignore:
+    #   - dependency-name: k8s.io/*
     groups:
       go-security-dependencies:
         applies-to: security-updates
         exclude-patterns:
-        - "github.com/openshift/*"
+        - github.com/openshift/*
       go-update-dependencies:
         applies-to: version-updates
         exclude-patterns:
-        - "github.com/openshift/*"
+        - github.com/openshift/*
     
