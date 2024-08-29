@@ -24,7 +24,7 @@ updates:
         update-types:
           - minor
           - patch
-      go-major-dependencies:
+      go-submodule-major-dependencies:
         exclude-patterns:
         - "github.com/openshift/*"
         update-types:
