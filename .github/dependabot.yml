@@ -19,6 +19,9 @@ updates:
       go-submodule-dependencies:
         exclude-patterns:
         - "github.com/openshift/*"
+        update-types:
+          - minor
+          - patch
 
 
   - package-ecosystem: gomod
@@ -38,4 +41,7 @@ updates:
       go-dependencies:
         exclude-patterns:
         - "github.com/openshift/*"
+        update-types:
+          - minor
+          - patch
     
