@@ -19,11 +19,16 @@ updates:
       go-submodule-dependencies:
         exclude-patterns:
         - "github.com/openshift/*"
-        - "k8s.io/*"
+        - "*k8s.io/*"
         update-types:
           - minor
           - patch
-
+      go-major-dependencies:
+        exclude-patterns:
+        - "github.com/openshift/*"
+        - "*k8s.io/*"
+        update-types:
+          - major
 
   - package-ecosystem: gomod
     directory: "/"
@@ -42,8 +47,14 @@ updates:
       go-dependencies:
         exclude-patterns:
         - "github.com/openshift/*"
-        - "k8s.io/*"
+        - "*k8s.io/*"
         update-types:
           - minor
           - patch
+      go-major-dependencies:
+        exclude-patterns:
+        - "github.com/openshift/*"
+        - "*k8s.io/*"
+        update-types:
+          - major
     
