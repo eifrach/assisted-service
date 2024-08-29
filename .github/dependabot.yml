@@ -17,8 +17,8 @@ updates:
       prefix: NO-ISSUE
     groups:
       go-submodule-dependencies:
-        patterns:
-          - "*"
+        exclude-patterns::
+          - "github.com/openshift/*"
 
 
   - package-ecosystem: gomod
@@ -35,10 +35,10 @@ updates:
     groups:
       go-security-dependencies:
         applies-to: security-updates
-        patterns:
-          - "*"  
+        exclude-patterns::
+          - "github.com/openshift/*"
       go-update-dependencies:
         applies-to: version-updates
-        patterns:
-          - "*"  
+        exclude-patterns::
+          - "github.com/openshift/*"
     
