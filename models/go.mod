@@ -2,6 +2,8 @@ module github.com/openshift/assisted-service/models
 
 go 1.21
 
+toolchain go1.21.11
+
 require (
 	github.com/go-openapi/errors v0.20.3
 	github.com/go-openapi/strfmt v0.21.3

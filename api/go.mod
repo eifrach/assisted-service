@@ -2,6 +2,8 @@ module github.com/openshift/assisted-service/api
 
 go 1.21
 
+toolchain go1.21.11
+
 require (
 	github.com/openshift/assisted-service/models v0.0.0
 	github.com/openshift/custom-resource-status v1.1.2
