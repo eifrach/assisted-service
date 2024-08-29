@@ -19,6 +19,7 @@ updates:
       go-submodule-dependencies:
         exclude-patterns:
         - "github.com/openshift/*"
+        - "k8s.io/*"
         update-types:
           - minor
           - patch
@@ -41,6 +42,7 @@ updates:
       go-dependencies:
         exclude-patterns:
         - "github.com/openshift/*"
+        - "k8s.io/*"
         update-types:
           - minor
           - patch
