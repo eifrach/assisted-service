@@ -15,18 +15,18 @@ updates:
       - go
     commit-message:
       prefix: NO-ISSUE
+    ignore:
+      - dependency-name: "*k8s.io/*"
     groups:
       go-submodule-dependencies:
         exclude-patterns:
         - "github.com/openshift/*"
-        - "*k8s.io/*"
         update-types:
           - minor
           - patch
       go-major-dependencies:
         exclude-patterns:
         - "github.com/openshift/*"
-        - "*k8s.io/*"
         update-types:
           - major
 
@@ -41,20 +41,18 @@ updates:
       - go
     commit-message:
       prefix: NO-ISSUE
-    # ignore:
-    #   - dependency-name: k8s.io/*
+    ignore:
+      - dependency-name: "*k8s.io/*"
     groups:
       go-dependencies:
         exclude-patterns:
         - "github.com/openshift/*"
-        - "*k8s.io/*"
         update-types:
           - minor
           - patch
       go-major-dependencies:
         exclude-patterns:
         - "github.com/openshift/*"
-        - "*k8s.io/*"
         update-types:
           - major
     
