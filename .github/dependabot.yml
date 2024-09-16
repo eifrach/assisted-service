@@ -5,7 +5,6 @@
 version: 2
 updates:
   - package-ecosystem: gomod
-    # vendor: true
     directories: [ "/", "/api", "/client", "/models" ]
     schedule:
       interval: "daily"
