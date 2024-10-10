@@ -9,4 +9,4 @@ if [ "$rhel_version" = "8" ]; then
   replace_dnf_repositories_ref
 fi
 
-dnf install --enablerepo=$repo -y gcc git nmstate-devel openssl-devel && dnf clean all
+dnf install --enablerepo=powertools -y gcc git nmstate-devel openssl-devel && dnf clean all
