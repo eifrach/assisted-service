@@ -17,7 +17,7 @@ var _ = Describe("MCE Operator", func() {
 
 	var (
 		ctx                           = context.TODO()
-		operator                      = NewMceOperator(common.GetTestLog())
+		operator                      = NewOperator(common.GetTestLog())
 		hostWithNoInventory           = &models.Host{}
 		hostWithInsufficientResources = &models.Host{
 			Inventory: Inventory(&InventoryResources{

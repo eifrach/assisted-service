@@ -3,18 +3,14 @@ package openshiftai
 import (
 	"context"
 	"fmt"
+	"github.com/openshift/assisted-service/internal/featuresupport"
 	"strings"
 	"text/template"
 
 	"github.com/kelseyhightower/envconfig"
 	"github.com/openshift/assisted-service/internal/common"
 	"github.com/openshift/assisted-service/internal/operators/api"
-	"github.com/openshift/assisted-service/internal/operators/authorino"
-	"github.com/openshift/assisted-service/internal/operators/nvidiagpu"
-	"github.com/openshift/assisted-service/internal/operators/odf"
-	"github.com/openshift/assisted-service/internal/operators/pipelines"
-	"github.com/openshift/assisted-service/internal/operators/serverless"
-	"github.com/openshift/assisted-service/internal/operators/servicemesh"
+	commonoperators "github.com/openshift/assisted-service/internal/operators/common"
 	"github.com/openshift/assisted-service/internal/templating"
 	"github.com/openshift/assisted-service/models"
 	"github.com/openshift/assisted-service/pkg/conversions"
@@ -36,8 +32,8 @@ type operator struct {
 	templates *template.Template
 }
 
-// NewOpenShiftAIOperator creates new OpenShift AI operator.
-func NewOpenShiftAIOperator(log logrus.FieldLogger) *operator {
+// NewOperator creates new OpenShift AI operator.
+func NewOperator(log logrus.FieldLogger) *operator {
 	config := &Config{}
 	err := envconfig.Process(common.EnvConfigPrefix, config)
 	if err != nil {
@@ -65,19 +61,9 @@ func (o *operator) GetFullName() string {
 
 // GetDependencies provides a list of dependencies of the Operator
 func (o *operator) GetDependencies(c *common.Cluster) (result []string, err error) {
-	// TODO: We shold probably add the node feature discovery and NVIDIA GPU operators only if there is at least one
-	// NVIDIA GPU in the cluster, but unfortunatelly this is calculated and saved to the database only when the
-	// cluster is created or updated via the API, and at that point we don't have the host inventory yet to
-	// determine if there are NVIDIA GPU.
-	result = []string{
-		authorino.Operator.Name,
-		nvidiagpu.Operator.Name,
-		odf.Operator.Name,
-		pipelines.Operator.Name,
-		serverless.Operator.Name,
-		servicemesh.Operator.Name,
-	}
-	return result, nil
+	filter := featuresupport.GetFeatureFilter(c.OpenshiftVersion, &c.CPUArchitecture, c.Platform.Type, nil)
+	featureList := featuresupport.GetFeatureDependencies(o.GetFeatureSupportID(), filter)
+	return commonoperators.GetListOperatorByFeature(featureList), nil
 }
 
 // GetClusterValidationID returns cluster validation ID for the operator.

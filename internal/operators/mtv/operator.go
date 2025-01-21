@@ -28,7 +28,7 @@ var Operator = models.MonitoredOperator{
 	TimeoutSeconds:   60 * 60,
 }
 
-func NewMTVOperator(log logrus.FieldLogger) *operator {
+func NewOperator(log logrus.FieldLogger) *operator {
 	cfg := Config{}
 	err := envconfig.Process(common.EnvConfigPrefix, &cfg)
 	if err != nil {

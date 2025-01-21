@@ -20,8 +20,8 @@ var Operator = models.MonitoredOperator{
 	TimeoutSeconds:   70 * 60,
 }
 
-// New LSOperator creates new instance of a Local Storage Operator installation plugin
-func NewLSOperator() *lsOperator {
+// New NewOperator creates new instance of a Local Storage Operator installation plugin
+func NewOperator() *lsOperator {
 	return &lsOperator{}
 }
 

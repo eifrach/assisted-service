@@ -20,7 +20,7 @@ var _ = Describe("Manifest generation", func() {
 				OpenshiftVersion: "4.12.0",
 			},
 		}
-		operator = NewServerLessOperator(common.GetTestLog())
+		operator = NewOperator(common.GetTestLog())
 	})
 
 	It("Generates the required OpenShift manifests", func() {

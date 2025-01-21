@@ -2,6 +2,7 @@ package featuresupport
 
 import (
 	"fmt"
+	"slices"
 
 	"github.com/go-openapi/swag"
 	"github.com/openshift/assisted-service/internal/common"
@@ -59,6 +60,15 @@ func GetFeatureByID(featureID models.FeatureSupportLevelID) SupportLevelFeature 
 	return featuresList[featureID]
 }
 
+func GetFeatureFilter(openshiftVersion string, cpuArchitecture *string, platformType *models.PlatformType, externalPlatformName *string) SupportLevelFilters {
+	return SupportLevelFilters{
+		OpenshiftVersion:     openshiftVersion,
+		CPUArchitecture:      cpuArchitecture,
+		PlatformType:         platformType,
+		ExternalPlatformName: externalPlatformName,
+	}
+}
+
 func getFeatureSupportList(features map[models.FeatureSupportLevelID]SupportLevelFeature, filters SupportLevelFilters) models.SupportLevels {
 	featureSupportList := models.SupportLevels{}
 
@@ -92,12 +102,7 @@ func removeEmptySupportLevel(supportLevels models.SupportLevels) {
 
 // GetFeatureSupportList Get features support level list, cpuArchitecture is optional and the default value is x86
 func GetFeatureSupportList(openshiftVersion string, cpuArchitecture *string, platformType *models.PlatformType, externalPlatformName *string) models.SupportLevels {
-	filters := SupportLevelFilters{
-		OpenshiftVersion:     openshiftVersion,
-		CPUArchitecture:      cpuArchitecture,
-		PlatformType:         platformType,
-		ExternalPlatformName: externalPlatformName,
-	}
+	filters := GetFeatureFilter(openshiftVersion, cpuArchitecture, platformType, externalPlatformName)
 
 	if cpuArchitecture == nil {
 		filters.CPUArchitecture = swag.String(common.DefaultCPUArchitecture)
@@ -162,4 +167,19 @@ func isFeaturesCompatible(openshiftVersion, cpuArchitecture string, activatedFea
 		}
 	}
 	return nil
+}
+
+func GetFeatureDependencies(feature models.FeatureSupportLevelID, filters SupportLevelFilters) []models.FeatureSupportLevelID {
+	var featureDependencies []models.FeatureSupportLevelID
+	dependencies := featuresList[feature].getFeatureDependencies(filters)
+	featureDependencies = dependencies
+	for _, dep := range dependencies {
+		subDependencies := featuresList[dep].getFeatureDependencies(filters)
+		for _, subDependency := range subDependencies {
+			if !slices.Contains(dependencies, subDependency) {
+				featureDependencies = append(featureDependencies, subDependency)
+			}
+		}
+	}
+	return featureDependencies
 }

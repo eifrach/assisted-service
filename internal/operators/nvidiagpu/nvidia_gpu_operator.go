@@ -31,8 +31,8 @@ type operator struct {
 	templates *template.Template
 }
 
-// NewNvidiaGPUOperator creates new NVIDIA GPU operator.
-func NewNvidiaGPUOperator(log logrus.FieldLogger) *operator {
+// NewOperator creates new NVIDIA GPU operator.
+func NewOperator(log logrus.FieldLogger) *operator {
 	config := &Config{}
 	err := envconfig.Process(common.EnvConfigPrefix, config)
 	if err != nil {

@@ -597,6 +597,17 @@ func (f *OpenShiftAIFeature) getFeatureActiveLevel(cluster *common.Cluster, _ *m
 	return activeLevelNotActive
 }
 
+func (f *OpenShiftAIFeature) getFeatureDependencies(_ SupportLevelFilters) []models.FeatureSupportLevelID {
+	return []models.FeatureSupportLevelID{
+		models.FeatureSupportLevelIDODF,
+		models.FeatureSupportLevelIDAUTHORINO,
+		models.FeatureSupportLevelIDNVIDIAGPU,
+		models.FeatureSupportLevelIDPIPELINES,
+		models.FeatureSupportLevelIDSERVERLESS,
+		models.FeatureSupportLevelIDSERVICEMESH,
+	}
+}
+
 // AuthorinoFeature describes the support for the Authorino operator.
 type AuthorinoFeature struct{}
 

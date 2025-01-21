@@ -27,8 +27,8 @@ type operator struct {
 	templates *template.Template
 }
 
-// NewFeatureDiscoveryOperator creates new node feature discovery operator.
-func NewNodeFeatureDiscoveryOperator(log logrus.FieldLogger) *operator {
+// NewOperator creates new node feature discovery operator.
+func NewOperator(log logrus.FieldLogger) *operator {
 	config := &Config{}
 	err := envconfig.Process(common.EnvConfigPrefix, config)
 	if err != nil {

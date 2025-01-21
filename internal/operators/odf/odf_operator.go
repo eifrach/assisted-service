@@ -47,8 +47,8 @@ var Operator = models.MonitoredOperator{
 	TimeoutSeconds:   30 * 60,
 }
 
-// NewOdfOperator creates new ODFOperator
-func NewOdfOperator(log logrus.FieldLogger) *operator {
+// NewOperator creates new ODFOperator
+func NewOperator(log logrus.FieldLogger) *operator {
 	cfg := Config{}
 	err := envconfig.Process(common.EnvConfigPrefix, &cfg)
 	if err != nil {

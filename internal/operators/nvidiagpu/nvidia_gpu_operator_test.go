@@ -20,7 +20,7 @@ var _ = Describe("Operator", func() {
 
 	BeforeEach(func() {
 		ctx = context.Background()
-		operator = NewNvidiaGPUOperator(common.GetTestLog())
+		operator = NewOperator(common.GetTestLog())
 	})
 
 	DescribeTable(

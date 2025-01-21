@@ -11,7 +11,7 @@ import (
 )
 
 var _ = Describe("MTV manifest generation", func() {
-	operator := NewMTVOperator(common.GetTestLog())
+	operator := NewOperator(common.GetTestLog())
 	var cluster *common.Cluster
 
 	getCluster := func(openshiftVersion string) *common.Cluster {

@@ -9,7 +9,7 @@ import (
 )
 
 var _ = Describe("MCE manifest generation", func() {
-	operator := NewMceOperator(common.GetTestLog())
+	operator := NewOperator(common.GetTestLog())
 	var cluster *common.Cluster
 
 	getCluster := func(openshiftVersion string) *common.Cluster {

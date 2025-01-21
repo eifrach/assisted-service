@@ -1,7 +1,10 @@
 package common
 
 import (
+	"github.com/openshift/assisted-service/internal/featuresupport"
+	"github.com/openshift/assisted-service/internal/operators/api"
 	"github.com/openshift/assisted-service/models"
+	"github.com/openshift/assisted-service/operator/mce"
 	"github.com/openshift/assisted-service/pkg/conversions"
 )
 
@@ -31,4 +34,25 @@ func HasOperator(operators []*models.MonitoredOperator, operatorName string) boo
 		}
 	}
 	return false
+}
+
+func GetOperatorByFeature(featureName models.FeatureSupportLevelID) *models.MonitoredOperator {
+	nameToOperator := make(map[string]api.Operator)
+	for _, op := range []*models.MonitoredOperator{} {
+		if featureName == nameToOperator[op.Name].GetFeatureSupportID() {
+			return op
+		}
+	}
+	return nil
+}
+
+func GetListOperatorByFeature(listFeature []models.FeatureSupportLevelID) []string {
+	var operators []string
+	for _, feature := range listFeature {
+		operatorObject := GetOperatorByFeature(feature)
+		if operatorObject != nil {
+			operators = append(operators, operatorObject.Name)
+		}
+	}
+	return operators
 }

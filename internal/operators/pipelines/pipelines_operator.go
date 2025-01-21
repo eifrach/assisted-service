@@ -27,8 +27,8 @@ type operator struct {
 	templates *template.Template
 }
 
-// NewPipelinesOperator creates new pipelines operator.
-func NewPipelinesOperator(log logrus.FieldLogger) *operator {
+// NewOperator creates new pipelines operator.
+func NewOperator(log logrus.FieldLogger) *operator {
 	config := &Config{}
 	err := envconfig.Process(common.EnvConfigPrefix, config)
 	if err != nil {

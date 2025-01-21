@@ -20,7 +20,7 @@ var _ = Describe("OCS manifest generation", func() {
 		} `yaml:"spec"`
 	}
 
-	operator := NewOdfOperator(common.GetTestLog())
+	operator := NewOperator(common.GetTestLog())
 
 	Context("Create OCS Manifests for all deployment modes with openshiftVersion as 4.8.X", func() {
 		It("Check YAMLs of OCS in Compact Mode", func() {

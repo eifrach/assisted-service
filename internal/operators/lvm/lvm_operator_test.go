@@ -48,7 +48,7 @@ var _ = Describe("Lvm Operator", func() {
 		diskID1 = "/dev/disk/by-id/test-disk-1"
 		diskID2 = "/dev/disk/by-id/test-disk-2"
 
-		operator         = NewLvmOperator(common.GetTestLog())
+		operator         = NewOperator(common.GetTestLog())
 		lvmMemMB         = conversions.MibToBytes(operator.Config.LvmMemoryPerHostMiB)
 		lvmMemMB_pre4_13 = conversions.MibToBytes(operator.Config.LvmMemoryPerHostMiBBefore4_13)
 

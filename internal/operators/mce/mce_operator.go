@@ -29,8 +29,8 @@ var Operator = models.MonitoredOperator{
 	TimeoutSeconds:   60 * 60,
 }
 
-// NewMceOperator creates new MCE operator.
-func NewMceOperator(log logrus.FieldLogger) *operator {
+// NewOperator creates new MCE operator.
+func NewOperator(log logrus.FieldLogger) *operator {
 	cfg := Config{}
 	err := envconfig.Process(common.EnvConfigPrefix, &cfg)
 	if err != nil {

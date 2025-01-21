@@ -27,7 +27,7 @@ var _ = Describe("MTV Operator", func() {
 
 	Context("operator", func() {
 		BeforeEach(func() {
-			operator = NewMTVOperator(log)
+			operator = NewOperator(log)
 		})
 
 		It("should return the name of the operator", func() {
@@ -47,7 +47,7 @@ var _ = Describe("MTV Operator", func() {
 
 	Context("host requirements", func() {
 		BeforeEach(func() {
-			operator = NewMTVOperator(log)
+			operator = NewOperator(log)
 		})
 
 		var cluster common.Cluster
@@ -81,7 +81,7 @@ var _ = Describe("MTV Operator", func() {
 
 	Context("Validate host", func() {
 		BeforeEach(func() {
-			operator = NewMTVOperator(log)
+			operator = NewOperator(log)
 		})
 
 		var cluster common.Cluster

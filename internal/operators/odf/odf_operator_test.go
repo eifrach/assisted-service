@@ -31,7 +31,7 @@ func getHostID() *strfmt.UUID {
 var _ = Describe("Odf Operator", func() {
 	var (
 		ctx                 = context.TODO()
-		operator            = NewOdfOperator(common.GetTestLog())
+		operator            = NewOperator(common.GetTestLog())
 		masterWithThreeDisk = &models.Host{ID: getHostID(), Role: models.HostRoleMaster, InstallationDiskID: diskID1,
 			Inventory: Inventory(&InventoryResources{Cpus: 12, Ram: 32 * conversions.GiB,
 				Disks: []*models.Disk{

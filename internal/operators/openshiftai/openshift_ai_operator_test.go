@@ -21,7 +21,7 @@ var _ = Describe("Operator", func() {
 
 	BeforeEach(func() {
 		ctx = context.Background()
-		operator = NewOpenShiftAIOperator(common.GetTestLog())
+		operator = NewOperator(common.GetTestLog())
 	})
 
 	DescribeTable(
@@ -120,7 +120,7 @@ var _ = Describe("Operator", func() {
 			}
 
 			// Create the operator:
-			operator = NewOpenShiftAIOperator(common.GetTestLog())
+			operator = NewOperator(common.GetTestLog())
 
 			// Run the check:
 			actual, err := operator.isSupportedGpu(gpu)

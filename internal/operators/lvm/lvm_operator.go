@@ -30,8 +30,8 @@ var Operator = models.MonitoredOperator{
 	TimeoutSeconds:   30 * 60,
 }
 
-// NewLvmOperator creates new LvmOperator
-func NewLvmOperator(log logrus.FieldLogger) *operator {
+// NewOperator creates new LvmOperator
+func NewOperator(log logrus.FieldLogger) *operator {
 	cfg := Config{}
 	err := envconfig.Process(common.EnvConfigPrefix, &cfg)
 	if err != nil {

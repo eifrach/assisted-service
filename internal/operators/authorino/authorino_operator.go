@@ -26,7 +26,7 @@ type operator struct {
 }
 
 // NewAuthorinoIOperator creates new Authorino operator.
-func NewAuthorinoOperator(log logrus.FieldLogger) *operator {
+func NewOperator(log logrus.FieldLogger) *operator {
 	templates, err := templating.LoadTemplates(templatesRoot)
 	if err != nil {
 		log.Fatal(err.Error())

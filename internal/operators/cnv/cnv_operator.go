@@ -39,8 +39,8 @@ var Operator = models.MonitoredOperator{
 	TimeoutSeconds:   60 * 60,
 }
 
-// NewCNVOperator creates new instance of a Container Native Virtualization installation plugin
-func NewCNVOperator(log logrus.FieldLogger, cfg Config) *operator {
+// NewOperator creates new instance of a Container Native Virtualization installation plugin
+func NewOperator(log logrus.FieldLogger, cfg Config) *operator {
 	log.WithField("config", cfg).Infof("Configuring CNV Operator plugin")
 	return &operator{
 		log:    log,

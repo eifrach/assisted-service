@@ -26,7 +26,7 @@ var _ = Describe("OSC Operator", func() {
 
 	Context("operator", func() {
 		BeforeEach(func() {
-			operator = NewOscOperator(log)
+			operator = NewOperator(log)
 		})
 
 		It("should return the right validations ids", func() {
@@ -41,7 +41,7 @@ var _ = Describe("OSC Operator", func() {
 
 	Context("host requirements", func() {
 		BeforeEach(func() {
-			operator = NewOscOperator(log)
+			operator = NewOperator(log)
 		})
 
 		var cluster common.Cluster
@@ -71,7 +71,7 @@ var _ = Describe("OSC Operator", func() {
 
 	Context("Validate host", func() {
 		BeforeEach(func() {
-			operator = NewOscOperator(log)
+			operator = NewOperator(log)
 		})
 
 		var cluster common.Cluster

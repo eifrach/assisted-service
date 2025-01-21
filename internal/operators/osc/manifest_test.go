@@ -12,7 +12,7 @@ import (
 )
 
 var _ = Describe("OSC manifest generation", func() {
-	operator := NewOscOperator(common.GetTestLog())
+	operator := NewOperator(common.GetTestLog())
 	var cluster *common.Cluster
 
 	getCluster := func(openshiftVersion string) *common.Cluster {
